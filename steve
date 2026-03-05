@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Interactive Procurement Cycle</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f8fc;
+        display: flex;
+        height: 100vh;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+    }
+
+    .circle-container {
+        position: relative;
+        width: 650px;
+        height: 650px;
+        border-radius: 50%;
+        background: #e6f3ff;
+    }
+
+    .segment {
+        position: absolute;
+        width: 50%;
+        height: 50%;
+        top: 50%;
+        left: 50%;
+        transform-origin: 0% 0%;
+        cursor: pointer;
+        background: #0a84d6;
+        color: white;
+        clip-path: polygon(0 0, 100% 0, 0 100%);
+        transition: 0.25s;
+    }
+
+    .segment:hover {
+        background: #0066aa;
+    }
+
+    .label {
+        position: absolute;
+        width: 150px;
+        text-align: center;
+        font-size: 14px;
+        transform-origin: 0 0;
+        cursor: pointer;
+        color: #003355;
+        font-weight: bold;
+    }
+
+    #center-info {
+        position: absolute;
+        width: 260px;
+        height: 260px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        border-radius: 50%;
+        box-shadow: 0px 0px 8px rgba(0,0,0,0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 20px;
+        font-size: 16px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="circle-container">
+
+    <div id="center-info">Click a section</div>
+
+    <script>
+        const stages = [
+            "1. Define business need & develop specification",
+            "2. Market analysis & make/buy decision",
+            "3. Develop sourcing strategy & plan",
+            "4. Pre‑procurement market testing",
+            "5. Develop documentation & detailed specification",
+            "6. Supplier selection to participate",
+            "7. Issue tender documents",
+            "8. Bid and tender evaluation",
+            "9. Contract award & implementation",
+            "10. Warehouse, logistics & receipt",
+            "11. Contract performance & improvement",
+            "12. Supplier relationship management",
+            "13. Asset management"
+        ];
+
+        const descriptions = [
+            "Clarifying purpose, scope, and needs.",
+            "Researching market capability and deciding outsource vs in‑house.",
+            "Developing approach, governance, timelines, and sourcing strategy.",
+            "Engaging suppliers for feasibility and innovation.",
+            "Creating ITT/RFQ/RFP documents and requirements.",
+            "Shortlisting suppliers through pre‑qualification.",
+            "Issuing formal tender documents to participants.",
+            "Evaluating bids fairly using criteria and scoring.",
+            "Awarding contract, onboarding supplier, mobilising implementation.",
+            "Receiving goods/services, checking quality & logistics.",
+            "Monitoring KPIs, improving performance, and compliance.",
+            "Building collaborative SRM to maximise value.",
+            "Managing asset lifecycle, maintenance & disposal."
+        ];
+
+        function createSegments() {
+            let container = document.querySelector(".circle-container");
+            let angleStep = 360 / stages.length;
+
+            for (let i = 0; i < stages.length; i++) {
+                let seg = document.createElement("div");
+                seg.className = "segment";
+                seg.style.transform = `rotate(${i * angleStep}deg) skewY(-60deg)`;
+                seg.onclick = () => 
+                    document.getElementById("center-info").innerHTML =
+                    `<b>${stages[i]}</b><br><br>${descriptions[i]}`;
+                container.appendChild(seg);
+
+                let label = document.createElement("div");
+                label.className = "label";
+                let angle = (i * angleStep - 90) * Math.PI / 180;
+                let radius = 280;
+
+                label.style.left = (325 + radius * Math.cos(angle)) + "px";
+                label.style.top  = (325 + radius * Math.sin(angle)) + "px";
+                label.innerHTML = stages[i];
+                label.onclick = () => 
+                    document.getElementById("center-info").innerHTML =
+                    `<b>${stages[i]}</b><br><br>${descriptions[i]}`;
+
+                container.appendChild(label);
+            }
+        }
+
+        createSegments();
+    </script>
+
+</div>
+
+</body>
+</html>
